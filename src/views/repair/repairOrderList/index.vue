@@ -117,7 +117,7 @@
           width="250"
           show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button type="danger" size="mini" @click="remove(scope.row)">派工</el-button>
+            <el-button type="danger" size="mini" @click="dispatching(scope.row.rep_id)">派工</el-button>
             <el-button type="primary" size="mini" @click="remove(scope.row)">修改</el-button>
             <el-button type="warning" size="mini" @click="remove(scope.row)">作废</el-button>
           </template>
@@ -135,6 +135,7 @@
         @next-click="fetchNext">
       </el-pagination>
     </div>
+    <dispatching></dispatching>
 
 
   </div>
@@ -142,8 +143,10 @@
 <script>
   import axios from 'axios'
   import { getRepairOrderList } from '@/api/repair/repair'
+  import dispatching from '@/views/repair/dispatching'
 
   export default {
+    components: { dispatching },
     data() {
       return {
         activities: [{
@@ -174,11 +177,12 @@
         },
         radio: '全部',
         tableData: [{
+          "rep_id":'101',
           "rep_imp": 0,
           "rep_dep": "护士台",
           "rep_person": "李东梅",
           "rep_num": "18535541",
-          "rep_addr": "北京",
+          "rep_addr": "北京333",
           "rep_desc": "电动床无法放平",
           "rep_man": "李师傅",
           "rep_status": 4
@@ -261,6 +265,13 @@
       reset (){
         this.listQuery.dataStatus = -1
         this.search()
+      },
+      dispatching (id){
+        const item = this.tableData.filter(item => {
+          return item.rep_id===id
+        })
+        console.log(item)
+
       }
 
 
