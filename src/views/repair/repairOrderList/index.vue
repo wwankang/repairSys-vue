@@ -33,7 +33,15 @@
       <el-table-column label="详情" type="expand" width="50">
           <template slot-scope="props">
             <el-tabs type="border-card">
-              <el-tab-pane label="报修状态跟踪">报修状态跟踪</el-tab-pane>
+              <el-tab-pane label="报修状态跟踪">
+                <div class="block">
+                  <el-timeline>
+                    <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.timestamp" placement="top">
+                      {{activity.content}}
+                    </el-timeline-item>
+                  </el-timeline>
+                </div>
+              </el-tab-pane>
               <el-tab-pane label="维修协助">维修协助</el-tab-pane>
               <el-tab-pane label="耗材">耗材</el-tab-pane>
               <el-tab-pane label="回访记录">回访记录</el-tab-pane>
@@ -112,7 +120,6 @@
             <el-button type="danger" size="mini" @click="remove(scope.row)">派工</el-button>
             <el-button type="primary" size="mini" @click="remove(scope.row)">修改</el-button>
             <el-button type="warning" size="mini" @click="remove(scope.row)">作废</el-button>
-            <!--            <el-button type="text" @click="remove(scope.row)">删除</el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -139,6 +146,24 @@
   export default {
     data() {
       return {
+        activities: [{
+          content: '支持使用图标',
+          timestamp: '2018-04-12 20:46',
+          size: 'large',
+          type: 'primary',
+          icon: 'el-icon-more'
+        }, {
+          content: '支持自定义颜色',
+          timestamp: '2018-04-03 20:46',
+          color: '#0bbd87'
+        }, {
+          content: '支持自定义尺寸',
+          timestamp: '2018-04-03 20:46',
+          size: 'large'
+        }, {
+          content: '默认样式的节点',
+          timestamp: '2018-04-03 20:46'
+        }],
         listLoading: true,
         total: 0,
         listQuery: {
@@ -148,7 +173,16 @@
           date:[]
         },
         radio: '全部',
-        tableData: [],
+        tableData: [{
+          "rep_imp": 0,
+          "rep_dep": "护士台",
+          "rep_person": "李东梅",
+          "rep_num": "18535541",
+          "rep_addr": "北京",
+          "rep_desc": "电动床无法放平",
+          "rep_man": "李师傅",
+          "rep_status": 4
+        }],
         multipleSelection: []
 
       }
