@@ -1,6 +1,6 @@
 import defaultSettings from '@/settings'
 
-const title = defaultSettings.title || 'web-flash Admin'
+const title = defaultSettings.title || '报修管理系统'
 
 export default function getPageTitle(pageTitle) {
   if (pageTitle) {
