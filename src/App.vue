@@ -48,8 +48,11 @@ export default {
   }
 }
 </script>
-<style type="less" scoped>
-  .el-table th.gutter {
-    display: table-cell !important
+<style type="text/css" lang="scss">//表头错位问题
+  body .el-table th.gutter{
+    display: table-cell!important;
+  }
+  .el-table colgroup.gutter {
+    display: table-cell !important;
   }
 </style>
