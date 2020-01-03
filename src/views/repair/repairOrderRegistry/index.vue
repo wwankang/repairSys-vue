@@ -147,20 +147,21 @@
     data() {
       return {
         ruleForm: {
-          fromWhere:'',
-          degree:'',
-          dept:'',
-          name: '',
-          tel:'',
-          type:'',
-          device:'',
-          date:'',
-          desc:'',
-          area:'',
-          building:'',
-          floor:'',
-          room:'',
-          address:''
+          id:'',//报修单唯一id
+          fromWhere:'',//报修来源 0，1，2
+          degree:'',//紧急度 0,1
+          dept:'',//报修部门
+          name: '',//报修人
+          tel:'',//报修设备
+          type:'',//报修类别  单独一张表，
+          device:'',//报修设备
+          date:'',//期望时间
+          desc:'',//报修事项
+          area:'',//所在区域
+          building:'',//所在楼宇
+          floor:'',//所在楼层
+          room:'',//所在房间
+          address:''//地址详情
 
         },
         rules: {

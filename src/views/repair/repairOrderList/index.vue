@@ -22,15 +22,21 @@
         </el-col>
       </el-row>
       <el-divider></el-divider>
-      <el-button icon="el-icon-edit" size="mini" @click="registry">登记</el-button>
-      <el-button icon="el-icon-s-grid" size="mini">批量派工</el-button>
-      <el-button icon="el-icon-user" size="mini">回访</el-button>
-      <el-button icon="el-icon-printer" size="mini">打印维修工单</el-button>
-      <el-button icon="el-icon-refresh" size="mini" @click="refresh">刷新</el-button>
+      <el-row :gutter="24">
+        <el-col :span="24">
+          <div id="opration-button">
+            <el-button icon="el-icon-edit" size="mini" @click="registry">登记</el-button>
+            <el-button icon="el-icon-s-grid" size="mini">批量派工</el-button>
+            <el-button icon="el-icon-user" size="mini">回访</el-button>
+            <el-button icon="el-icon-printer" size="mini">打印维修工单</el-button>
+            <el-button icon="el-icon-refresh" size="mini" @click="refresh">刷新</el-button>
+          </div>
+        </el-col>
+      </el-row>
       <el-divider></el-divider>
-      <el-table border stripe ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" v-loading="listLoading" @selection-change="handleSelectionChange">
+      <el-table border fit stripe size="mini" ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" v-loading="listLoading" @selection-change="handleSelectionChange">
 
-      <el-table-column label="详情" type="expand" width="50">
+      <el-table-column label="详情" type="expand">
           <template slot-scope="props">
             <el-tabs type="border-card">
               <el-tab-pane label="报修状态跟踪">
@@ -53,13 +59,12 @@
         <!--多选框-->
         <el-table-column type="selection"></el-table-column>
         <!--序号-->
-        <el-table-column type="index" label="序号" width="50"></el-table-column>
+        <el-table-column type="index" label="序号"></el-table-column>
         <!--紧急度-->
         <el-table-column
           sortable
           prop="rep_imp"
-          label="紧急度"
-          width="120">
+          label="紧急度">
           <template slot-scope="scope">
             <span v-if="scope.row.rep_imp == 0">一般</span>
             <span v-else-if="scope.row.rep_imp == 1">紧急</span>
@@ -69,41 +74,34 @@
         </el-table-column>
         <el-table-column
           prop="rep_dep"
-          label="报修科室"
-          width="120">
+          label="报修科室">
         </el-table-column>
         <el-table-column
           sortable
           prop="rep_person"
-          label="报修人"
-          width="120">
+          label="报修人">
         </el-table-column>
         <el-table-column
           prop="rep_num"
-          label="报修电话"
-          width="120">
+          label="报修电话">
         </el-table-column>
         <el-table-column
           prop="rep_addr"
-          label="报修位置"
-          width="120">
+          label="报修位置">
         </el-table-column>
         <el-table-column
           sortable
           prop="rep_desc"
-          label="报修事项"
-          width="200">
+          label="报修事项">
         </el-table-column>
         <el-table-column
           prop="rep_man"
-          label="维修人"
-          width="120">
+          label="维修人">
         </el-table-column>
         <el-table-column
           sortable
           prop="rep_status"
-          label="单据状态"
-          width="120">
+          label="单据状态">
           <template slot-scope="scope">
             <span v-if="scope.row.rep_status == 0">未派工</span>
             <span v-else-if="scope.row.rep_status == 1">待处理</span>
@@ -114,7 +112,7 @@
         </el-table-column>
         <el-table-column
           label="操作"
-          width="250"
+          width="230"
           show-overflow-tooltip>
           <template slot-scope="scope">
             <el-button type="danger" size="mini" @click="showDialog(scope.row.rep_id)">派工</el-button>
@@ -286,11 +284,17 @@
   }
 </script>
 
-<style type="text/css" scoped>
+<style type="text/css" lang="scss" scoped>
 
   .el-table thead {
     color: #f5f7fa;
     background-color: #42b983;
+  }
+  #opration-button {
+    top: 20px;
+  }
+  .el-divider--horizontal {
+    margin: 10px 0;
   }
 </style>
 
