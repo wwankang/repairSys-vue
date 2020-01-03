@@ -117,7 +117,7 @@
           width="250"
           show-overflow-tooltip>
           <template slot-scope="scope">
-            <el-button type="danger" size="mini" @click="dispatching(scope.row.rep_id)">派工</el-button>
+            <el-button type="danger" size="mini" @click="showDialog(scope.row.rep_id)">派工</el-button>
             <el-button type="primary" size="mini" @click="remove(scope.row)">修改</el-button>
             <el-button type="warning" size="mini" @click="remove(scope.row)">作废</el-button>
           </template>
@@ -135,7 +135,7 @@
         @next-click="fetchNext">
       </el-pagination>
     </div>
-    <dispatching></dispatching>
+    <dispatching :isShow="isShow" @closeDialog="closeDialog" ></dispatching>
 
 
   </div>
@@ -149,6 +149,7 @@
     components: { dispatching },
     data() {
       return {
+        isShow:false,
         activities: [{
           content: '支持使用图标',
           timestamp: '2018-04-12 20:46',
@@ -266,14 +267,20 @@
         this.listQuery.dataStatus = -1
         this.search()
       },
-      dispatching (id){
-        const item = this.tableData.filter(item => {
-          return item.rep_id===id
-        })
-        console.log(item)
+      showDialog (id){
+        console.log('this.isShow: '+this.isShow)
+        this.isShow = true
 
+        // const item = this.tableData.filter(item => {
+        //   return item.rep_id===id
+        // })
+        // console.log(item)
+
+      },
+      closeDialog(){
+        console.log('closeDialog 执行')
+        this.isShow = false
       }
-
 
     }
   }

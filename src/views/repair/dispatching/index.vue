@@ -2,7 +2,7 @@
   <div class="app-container">
 
 
-    <el-dialog title="派工" :visible.sync="dispatchingDialogVisible">
+    <el-dialog title="派工" :visible.sync="isShow">
 
       <el-row :gutter="20">
         <el-col :span="10">
@@ -51,9 +51,9 @@
 
 <script>
   export default {
+    props:['isShow'],
     data () {
       return {
-        dispatchingDialogVisible: true,
         options: [{
           value: '选项1',
           label: '黄金糕'
@@ -73,10 +73,29 @@
         value: ''
       }
     },
+    watch:{
+      isShow(newVal,oldVal){
+        console.log("状态改变为:"+newVal)
+        if (newVal === false) {
+          console.log("调用父组件closeDialog ")
+          this.$emit('closeDialog')
+
+        }
+      }
+    },
     created: function () {
     },
     methods: {
-
+      hide(){//弹层消失事件
+        this.$message({
+          text : 'hide'
+        })
+      },
+      closed(){
+        this.$message({
+          text : 'closed'
+        })
+      }
     }
   };
 </script>
