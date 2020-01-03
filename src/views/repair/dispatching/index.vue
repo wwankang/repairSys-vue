@@ -6,9 +6,10 @@
 
       <el-row :gutter="20">
         <el-col :span="10">
-          <el-select v-model="value" filterable placeholder="请选择維修班组">
+          <span>维修班组: </span>
+          <el-select v-model="repair_team_value" filterable placeholder="请选择维修班组">
             <el-option
-              v-for="item in options"
+              v-for="item in repair_team"
               :key="item.value"
               :label="item.label"
               :value="item.value">
@@ -16,9 +17,10 @@
           </el-select>
         </el-col>
         <el-col :span="10">
-          <el-select v-model="value" filterable placeholder="请选择維修人员">
+          <span>维修人员: </span>
+          <el-select v-model="repair_per_value" filterable placeholder="请选择维修人员">
             <el-option
-              v-for="item in options"
+              v-for="item in repair_per"
               :key="item.value"
               :label="item.label"
               :value="item.value">
@@ -27,7 +29,7 @@
         </el-col>
       </el-row>
 
-      <el-divider></el-divider>
+      <!--<el-divider></el-divider>-->
 
 <!--      <el-form :model="form">-->
 <!--        <el-form-item label="活动名称" :label-width="formLabelWidth">-->
@@ -40,10 +42,10 @@
 <!--          </el-select>-->
 <!--        </el-form-item>-->
 <!--      </el-form>-->
-<!--      <div slot="footer" class="dialog-footer">-->
-<!--        <el-button @click="dialogFormVisible = false">取 消</el-button>-->
-<!--        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>-->
-<!--      </div>-->
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="cancel">关闭</el-button>
+        <el-button :loading="loading" type="primary" @click="dispatching">确定</el-button>
+      </div>
     </el-dialog>
 
   </div>
@@ -54,23 +56,44 @@
     props:['isShow'],
     data () {
       return {
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
+        loading: false,//加载图标
+
+        //维修班组
+        repair_team:[{
+          value: '1',
+          label: '维修班组1',
+        },{
+          value: '2',
+          label: '维修班组2',
+        },{
+          value: '3',
+          label: '维修班组3',
+        },{
+          value: '4',
+          label: '维修班组4',
+        },{
+          value: '5',
+          label: '维修班组5',
         }],
-        value: ''
+        //维修人员
+        repair_per:[{
+          value: '1',
+          label: '维修人员1',
+        },{
+          value: '2',
+          label: '维修人员2',
+        },{
+          value: '3',
+          label: '维修人员3',
+        },{
+          value: '4',
+          label: '维修人员4',
+        },{
+          value: '5',
+          label: '维修人员5',
+        }],
+        repair_team_value: '',
+        repair_per_value: ''
       }
     },
     watch:{
@@ -86,15 +109,11 @@
     created: function () {
     },
     methods: {
-      hide(){//弹层消失事件
-        this.$message({
-          text : 'hide'
-        })
+      cancel(){
+        this.isShow = false
       },
-      closed(){
-        this.$message({
-          text : 'closed'
-        })
+      dispatching(){
+        this.loading = true
       }
     }
   };

@@ -13,7 +13,7 @@
         </template>
         <el-dropdown class="avatar-container right-menu-item" trigger="click">
           <div class="avatar-wrapper">
-            <img class="user-avatar" src="@/assets/img/avatar.gif">
+            <img class="user-avatar" src="@/assets/img/user.svg">
             <i class="el-icon-caret-bottom"/>
           </div>
           <el-dropdown-menu slot="dropdown">
