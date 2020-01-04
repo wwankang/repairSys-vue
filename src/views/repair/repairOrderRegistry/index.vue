@@ -9,17 +9,17 @@
               <el-col :span="10">
                 <el-form-item label="报修来源:" prop="fromWhere">
                   <el-radio-group v-model="ruleForm.fromWhere">
-                    <el-radio label="临床"></el-radio>
-                    <el-radio label="巡检"></el-radio>
-                    <el-radio label="领导"></el-radio>
+                    <el-radio label="临床" value="0"></el-radio>
+                    <el-radio label="巡检" value="1"></el-radio>
+                    <el-radio label="领导" value="2"></el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
               <el-col :span="10">
                 <el-form-item label="紧急度:" prop="degree">
                   <el-radio-group v-model="ruleForm.degree">
-                    <el-radio label="一般"></el-radio>
-                    <el-radio label="紧急"></el-radio>
+                    <el-radio label="一般" value="0"></el-radio>
+                    <el-radio label="紧急" value="1"></el-radio>
                   </el-radio-group>
                 </el-form-item>
               </el-col>
@@ -47,8 +47,8 @@
               <el-col :span="10">
                 <el-form-item label="报修类别:" prop="type">
                   <el-select v-model="ruleForm.type" placeholder="请选择报修类别">
-                    <el-option label="区域一" value="shanghai"></el-option>
-                    <el-option label="区域二" value="beijing"></el-option>
+                    <el-option label="区域一" value="0"></el-option>
+                    <el-option label="区域二" value="1"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -103,7 +103,7 @@
               </el-col>
             </el-row>
             <el-form-item>
-              <el-button type="primary" @click="submitForm('ruleForm')">确认报修</el-button>
+              <el-button type="primary" :loading="loading" @click="submitForm('ruleForm')">确认报修</el-button>
               <el-button @click="resetForm('ruleForm')">重置</el-button>
             </el-form-item>
 
@@ -143,9 +143,11 @@
 
 </template>
 <script>
+  import { repair_order_registry } from '@/api/repair/repair'
   export default {
     data() {
       return {
+        loading: false,
         ruleForm: {
           id:'',//报修单唯一id
           fromWhere:'',//报修来源 0，1，2
@@ -165,24 +167,8 @@
 
         },
         rules: {
-          name: [
-            {required: true, message: '请输入活动名称', trigger: 'blur'},
-            {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
-          ],
-          region: [
-            {required: true, message: '请选择报修类别', trigger: 'change'}
-          ],
-          date: [
-            {type: 'date', required: true, message: '请选择日期', trigger: 'change'}
-          ],
           type: [
-            {type: 'array', required: true, message: '请至少选择一个活动性质', trigger: 'change'}
-          ],
-          resource: [
-            {required: false, message: '请选择活动资源', trigger: 'change'}
-          ],
-          desc: [
-            {required: true, message: '请填写活动形式', trigger: 'blur'}
+            {required: true, message: '请选择报修类别', trigger: 'change'}
           ]
         },
         tableData: [{
@@ -201,7 +187,26 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            this
+            this.loading = true
+            return new Promise((resolve, reject) => {
+              repair_order_registry(this.ruleForm).then(response => {
+                this.loading = false
+                this.$message({
+                  message:'提交成功',
+                  type:'success'
+                });
+                resolve()
+              }).catch(error => {
+                this.loading = false
+                this.$message({
+                  message:'提交失败',
+                  type:'error'
+                });
+                console.log(error);
+                reject(error)
+              })
+            })
           } else {
             console.log('error submit!!');
             return false;
@@ -211,13 +216,11 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      methods: {
-        handleEdit(index, row) {
-          console.log(index, row);
-        },
-        handleDelete(index, row) {
-          console.log(index, row);
-        },
+      handleEdit(index, row) {
+        console.log(index, row);
+      },
+      handleDelete(index, row) {
+        console.log(index, row);
       }
     }
   }
