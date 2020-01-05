@@ -34,7 +34,7 @@
         </el-col>
       </el-row>
       <el-divider></el-divider>
-      <el-table border fit stripe size="mini" ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" v-loading="listLoading" @selection-change="handleSelectionChange">
+      <el-table border fit highlight-current-row stripe size="mini" ref="multipleTable" :data="tableData" tooltip-effect="dark" style="width: 100%" v-loading="listLoading" @selection-change="handleSelectionChange">
 
       <el-table-column label="详情" type="expand">
           <template slot-scope="props">
@@ -63,35 +63,35 @@
         <!--紧急度-->
         <el-table-column
           sortable
-          prop="rep_imp"
+          prop="degree"
           label="紧急度">
           <template slot-scope="scope">
-            <span v-if="scope.row.rep_imp == 0">一般</span>
-            <span v-else-if="scope.row.rep_imp == 1">紧急</span>
+            <span v-if="scope.row.degree == 0">一般</span>
+            <span v-else-if="scope.row.degree == 1">紧急</span>
             <span v-else>一般</span>
           </template>
 
         </el-table-column>
         <el-table-column
-          prop="rep_dep"
+          prop="dept"
           label="报修科室">
         </el-table-column>
         <el-table-column
           sortable
-          prop="rep_person"
+          prop="name"
           label="报修人">
         </el-table-column>
         <el-table-column
-          prop="rep_num"
+          prop="tel"
           label="报修电话">
         </el-table-column>
         <el-table-column
-          prop="rep_addr"
+          prop="address"
           label="报修位置">
         </el-table-column>
         <el-table-column
           sortable
-          prop="rep_desc"
+          prop="desc"
           label="报修事项">
         </el-table-column>
         <el-table-column
@@ -116,8 +116,8 @@
           show-overflow-tooltip>
           <template slot-scope="scope">
             <el-button type="danger" size="mini" @click="showDialog(scope.row.rep_id)">派工</el-button>
-            <el-button type="primary" size="mini" @click="remove(scope.row)">修改</el-button>
-            <el-button type="warning" size="mini" @click="remove(scope.row)">作废</el-button>
+            <el-button type="primary" size="mini" @click="editDialog(scope.row.rep_id)">修改</el-button>
+            <el-button type="warning" size="mini" @click="invalidDialog(scope.row.rep_id)">作废</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -133,7 +133,65 @@
         @next-click="fetchNext">
       </el-pagination>
     </div>
-    <dispatching :isShow="isShow" @closeDialog="closeDialog" ></dispatching>
+<!-- 作废表格弹出框   -->
+    <div class="edit-container">
+      <el-dialog title="作废" :visible.sync="invaliddialogisShow">
+        <span>作废说明：</span>
+        <el-input type="textarea"></el-input>
+        <el-divider></el-divider>
+        <paigong :ruleForm="this.invalidForm" :disabled="this.isdisabled"></paigong>
+        <div slot="footer" class="dialog-footer">
+          <el-button size="mini" @click="this.invaliddialogisShow = false">关闭</el-button>
+          <el-button size="mini" :loading="loading" type="primary" >确定</el-button>
+        </div>
+      </el-dialog>
+    </div>
+<!-- 修改表格弹出框   -->
+    <div class="edit-container">
+      <el-dialog title="修改" :visible.sync="editdialogisShow">
+        <paigong :ruleForm="this.editForm" :disabled="this.isdisabled"></paigong>
+        <div slot="footer" class="dialog-footer">
+          <el-button size="mini" @click="this.dispdialogisShow = false">关闭</el-button>
+          <el-button size="mini" :loading="loading" type="primary" >确定</el-button>
+        </div>
+      </el-dialog>
+    </div>
+
+<!--    派工表格弹出框-->
+    <div class="dispatching-container">
+      <el-dialog title="派工" :visible.sync="dispdialogisShow">
+        <el-row :gutter="20">
+          <el-col :span="10">
+            <span>维修班组:</span>
+            <el-select size="mini" v-model="repair_team_value" filterable placeholder="请选择维修班组">
+              <el-option
+                v-for="item in repair_team"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="10" >
+            <span>维修人员: </span>
+            <el-select size="mini" v-model="repair_per_value" filterable placeholder="请选择维修人员">
+              <el-option
+                v-for="item in repair_per"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+        </el-row>
+        <el-divider></el-divider>
+        <paigong :ruleForm="this.dispatchingForm" :disabled="this.isdisabled"></paigong>
+        <div slot="footer" class="dialog-footer">
+          <el-button size="mini" @click="this.dispdialogisShow=false">关闭</el-button>
+          <el-button size="mini" :loading="loading" type="primary" >确定</el-button>
+        </div>
+      </el-dialog>
+    </div>
 
 
   </div>
@@ -141,31 +199,27 @@
 <script>
   import axios from 'axios'
   import { getRepairOrderList } from '@/api/repair/repair'
-  import dispatching from '@/views/repair/dispatching'
+  import paigong from '@/views/repair/form/index'
 
   export default {
-    components: { dispatching },
+    components: { paigong },
     data() {
       return {
-        isShow:false,
-        activities: [{
-          content: '支持使用图标',
-          timestamp: '2018-04-12 20:46',
-          size: 'large',
-          type: 'primary',
-          icon: 'el-icon-more'
-        }, {
-          content: '支持自定义颜色',
-          timestamp: '2018-04-03 20:46',
-          color: '#0bbd87'
-        }, {
-          content: '支持自定义尺寸',
-          timestamp: '2018-04-03 20:46',
-          size: 'large'
-        }, {
-          content: '默认样式的节点',
-          timestamp: '2018-04-03 20:46'
-        }],
+        isdisabled :true,//表格是否禁用
+        loading: false,//加载图标
+        //维修班组
+        repair_team:[],
+        //维修人员
+        repair_per:[],
+        repair_team_value: '',
+        repair_per_value: '',
+        dispatchingForm:null,
+        editForm: null,
+        invalidForm: null,
+        dispdialogisShow:false,
+        editdialogisShow:false,
+        invaliddialogisShow:false,
+        activities: [],
         listLoading: true,
         total: 0,
         listQuery: {
@@ -175,38 +229,36 @@
           date:[]
         },
         radio: '全部',
-        tableData: [{
-          "rep_id":'101',
-          "rep_imp": 0,
-          "rep_dep": "护士台",
-          "rep_person": "李东梅",
-          "rep_num": "18535541",
-          "rep_addr": "北京333",
-          "rep_desc": "电动床无法放平",
-          "rep_man": "李师傅",
-          "rep_status": 4
-        }],
+        tableData: [],
         multipleSelection: []
 
       }
     },
     created() {
       this.fetchData()
+
+      //获取列表数据 假数据
+      this.getTableData()
+      //获取维修班组和维修人员数据
+      this.getbanzuData()
     },
     watch: {
 
     },
 
     methods: {
+      async getTableData(){
+        const data = await axios.get('/data.json');
+        this.tableData = data.data
+        this.total = this.tableData.length
+      },
+      async getbanzuData(){
+        const data = await axios.get('/banzu.json');
+        this.repair_team = data.data
+        this.repair_per = data.data
+      },
       fetchData() {
         console.log("报修列表获取数据开始")
-
-        //测试数据
-        // const data = axios.get('/data.json');
-        // console.log(data);
-        // this.tableData = data.data
-        // this.total = this.tableData.length
-        // this.listLoading = true
 
         getRepairOrderList(this.listQuery).then(response => {
           this.tableData = response.data.records
@@ -266,20 +318,38 @@
         this.search()
       },
       showDialog (id){
-        console.log('this.isShow: '+this.isShow)
-        this.isShow = true
-
-        // const item = this.tableData.filter(item => {
-        //   return item.rep_id===id
-        // })
-        // console.log(item)
+        const data = this.tableData.filter(item => {
+          return item.rep_id===id
+        })
+        if(data){
+          this.dispatchingForm = data[0]
+          debugger
+        }
+        console.log(this.dispatchingForm)
+        this.dispdialogisShow = true
+        this.isdisabled = true
 
       },
-      closeDialog(){
-        console.log('closeDialog 执行')
-        this.isShow = false
-      }
-
+      editDialog (id){
+        const data = this.tableData.filter(item => {
+          return item.rep_id===id
+        })
+        if(data){
+          this.editForm = data[0]
+        }
+        this.editdialogisShow = true
+        this.isdisabled = false
+      },
+      invalidDialog (id){
+        const data = this.tableData.filter(item => {
+          return item.rep_id===id
+        })
+        if(data){
+          this.invalidForm = data[0]
+        }
+        this.invaliddialogisShow = true
+        this.isdisabled = true
+      },
     }
   }
 </script>
