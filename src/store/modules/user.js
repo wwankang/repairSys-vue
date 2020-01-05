@@ -71,7 +71,7 @@ const actions = {
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_PROFILE',profile)
-        //commit('SET_PERMISSIONS',permissions)
+        commit('SET_PERMISSIONS',permissions)
         resolve(data)
       }).catch(error => {
         reject(error)
