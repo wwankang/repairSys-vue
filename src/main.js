@@ -29,7 +29,7 @@ import {mockXHR} from "../mock";
 // set ElementUI lang to EN
 Vue.use(ElementUI, {   i18n: (key, value) => i18n.t(key, value) })
 
-mockXHR()
+// mockXHR()
 
 Vue.component('v-chart', ECharts)
 Vue.config.productionTip = false
