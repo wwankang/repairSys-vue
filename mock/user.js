@@ -45,7 +45,7 @@ success: true*/
       }
 
       return {
-        code: 20000,
+        status: 'success',
         data: token
       }
     }
@@ -92,7 +92,7 @@ success: true*/
       }
 
       return {
-        code: 20000,
+        status: 'success',
         data: info
       }
     }
