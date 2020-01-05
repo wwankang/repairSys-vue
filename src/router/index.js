@@ -79,6 +79,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/',
+    component: Layout,
+    meta: { title: '系统管理', icon: 'cfg', noCache: true },
+    children: [
+      {
+        path: 'userManager',
+        component: () => import('@/views/system/user/index'),
+        name: 'userManager',
+        meta: { title: '用户管理', icon: 'user', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/account',
     component: Layout,
     hidden: true,
