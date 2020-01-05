@@ -10,7 +10,7 @@
 <script>
 
 export default {
-  name: 'App',
+ /* name: 'App',
   data () {
     return {
       path:"ws://127.0.0.1:8082/websocket/pc",
@@ -45,7 +45,7 @@ export default {
   },
   destroyed () {
     this.socket.onclose = this.close
-  }
+  }*/
 }
 </script>
 <style type="text/css" lang="scss">//表头错位问题
