@@ -33,9 +33,9 @@ router.beforeEach(async(to, from, next) => {
         try {
           // get user info
           await store.dispatch('user/getInfo')
-          // const accessRoutes  = await store.dispatch('menu/getSideMenus');
+          const accessRoutes  = await store.dispatch('menu/getSideMenus');
 
-          // router.addRoutes(constantRoutes)
+          router.addRoutes(accessRoutes)
           next({ ...to, replace: true })
         } catch (error) {
           // remove token and go to login page to re-login
