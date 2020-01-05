@@ -171,15 +171,7 @@
             {required: true, message: '请选择报修类别', trigger: 'change'}
           ]
         },
-        tableData: [{
-          name: '张三',
-        }, {
-          name: '王李四',
-        }, {
-          name: '王王五',
-        }, {
-          name: '王小虎',
-        }],
+        tableData: [],
         search: ''
       };
     },
