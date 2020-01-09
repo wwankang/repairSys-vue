@@ -80,9 +80,9 @@ export default {
   },
   methods: {
     init() {
-      getDeptList().then(response => {
-        this.deptList = response.data
-      })
+      // getDeptList().then(response => {
+      //   this.deptList = response.data
+      // })
       this.fetchData()
     },
     fetchData() {

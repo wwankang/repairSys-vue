@@ -12,13 +12,18 @@ NProgress.configure({ showSpinner: false }) // NProgress Configuration
 const whiteList = ['/login','/registry'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
-  // start progress bar
+
+  const accessRoutes  = await store.dispatch('menu/getSideMenus');
+  router.addRoutes(accessRoutes)
+  next()
+/*  // start progress bar
   NProgress.start()
   // set page title
   document.title = getPageTitle(to.meta.title)
 
   // determine whether the user has logged in
   const hasToken = getToken()
+
 
   if (hasToken) {
     if (to.path === '/login') {
@@ -34,30 +39,29 @@ router.beforeEach(async(to, from, next) => {
           // get user info
           await store.dispatch('user/getInfo')
           const accessRoutes  = await store.dispatch('menu/getSideMenus');
-
           router.addRoutes(accessRoutes)
           next({ ...to, replace: true })
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
-          next(`/login?redirect=${to.path}`)
+          next(`/login?redirect2=${to.path}`)
           NProgress.done()
         }
       }
     }
   } else {
-    /* has no token*/
+    /!* has no token*!/
 
     if (whiteList.indexOf(to.path) !== -1) {
       // in the free login whitelist, go directly
       next()
     } else {
       // other pages that do not have permission to access are redirected to the login page.
-      next(`/login?redirect=${to.path}`)
+      next(`/login?redirect1=${to.path}`)
       NProgress.done()
     }
-  }
+  }*/
 })
 
 router.afterEach(() => {

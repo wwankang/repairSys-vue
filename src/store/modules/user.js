@@ -62,16 +62,16 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo().then(response => {
         const { data } = response
+
         if (!data) {
           reject('Verification failed, please Login again.')
         }
-        console.log('data',data)
         const { name, avatar,profile,permissions } = data
 
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
         commit('SET_PROFILE',profile)
-        commit('SET_PERMISSIONS',permissions)
+        // commit('SET_PERMISSIONS',permissions)
         resolve(data)
       }).catch(error => {
         reject(error)

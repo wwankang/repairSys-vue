@@ -13,26 +13,18 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    config.headers['Content-Type'] = 'application/json'
-    var token = getToken()
-    if (!token) {
-      token = ''
+    if (config.url.valueOf("login") != -1) {
+      config.headers['Content-Type'] = 'application/json'
+      //  给data赋值以绕过if判断
+
     }
-    config.headers['tokenHead'] = token
-
-
-    // if (config.url.valueOf("login") != -1) {
-    //   config.headers['Content-Type'] = 'application/json'
-    //   //  给data赋值以绕过if判断
-    //
-    // }
     // do something before request is sent
-    // var token = getToken()
-    //
-    // if (token) {
-    //   config.headers['Authorization'] = token // 让每个请求携带自定义token 请根据实际情况自行修改
-    //
-    // }
+    var token = getToken()
+
+    if (token) {
+      config.headers['Authorization'] = token // 让每个请求携带自定义token 请根据实际情况自行修改
+
+    }
     return config
   },
   error => {
@@ -47,7 +39,7 @@ service.interceptors.response.use(
   /**
    * If you want to get http information such as headers or status
    * Please return  response => response
-   */
+  */
 
   /**
    * Determine the request status by custom code
@@ -58,27 +50,27 @@ service.interceptors.response.use(
     const res = response.data
 
     // if the custom code is not 20000, it is judged as an error.
-    if (res.status !== 'success') {
+    if (res.code !== 20000) {
       Message({
         message: res.msg || 'error',
-        type: '',
+        type: 'error',
         duration: 5 * 1000
       })
 
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
-      // if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-      //   // to re-login
-      //   MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-      //     confirmButtonText: 'Re-Login',
-      //     cancelButtonText: 'Cancel',
-      //     type: 'warning'
-      //   }).then(() => {
-      //     store.dispatch('user/resetToken').then(() => {
-      //       location.reload()
-      //     })
-      //   })
-      // }
-      // return Promise.reject(res)
+      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+        // to re-login
+        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
+          confirmButtonText: 'Re-Login',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
+        })
+      }
+      return Promise.reject(res)
     } else {
       return res
     }

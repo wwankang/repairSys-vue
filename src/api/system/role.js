@@ -11,7 +11,7 @@ export function getList(params) {
 
 export function save(params) {
   return request({
-    url: '/role',
+    url: '/role/save',
     method: 'post',
     params
   })
@@ -19,7 +19,7 @@ export function save(params) {
 
 export function remove(roleId) {
   return request({
-    url: '/role',
+    url: '/role/remove',
     method: 'delete',
     params: {
       roleId: roleId

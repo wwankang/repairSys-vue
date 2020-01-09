@@ -323,7 +323,6 @@
         })
         if(data){
           this.dispatchingForm = data[0]
-          debugger
         }
         console.log(this.dispatchingForm)
         this.dispdialogisShow = true

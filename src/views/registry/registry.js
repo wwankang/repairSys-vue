@@ -34,7 +34,6 @@ export default {
   watch:{
     registryDialogShow(newValue, oldValue){
         this.$emit("dialogStatusChange",newValue)
-      debugger
     }
   },
   methods: {

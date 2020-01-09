@@ -10,8 +10,8 @@ const tokens = {
 
 const users = {
   'admin-token': {
-    roles: ['admin'],
-    introduction: 'I am a super administrator',
+    permissions: ["/loginLog/delLoginLog", "/cms/articleEdit", "/mgr/freeze", "/log/detail", "/loginLog/list", "/fileMgr", "/banner", "/history", "/channel", "/mgr", "/dict", "/swagger", "/mgr/reset", "/log", "/menu/add", "/menu/edit", "/dict/delete", "/dict/add", "/role/setAuthority", "/cms", "/role/add", "/mgr/edit", "/dept", "/task/update", "/dept/delete", "/message", "/log/delLog", "/role/remove", "/contacts", "/cfg", "/cfg/update", "/taskLog", "/menu", "/cfg/delete", "/task/add", "/mgr/delete", "/article", "/cfg/add", "/dept/detail", "/mgr/setRole", "/druid", "/dept/list", "/dict/list", "/sender", "/template", "/mgr/unfreeze", "/role/edit", "/dict/update", "/mgr/add", "/loginLog", "/dept/update", "/optionMgr", "/role", "/dept/add", "/task", "/dict/detail", "/menu/remove", "/system", "/task/delete"],
+    profile: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Super Admin'
   },
@@ -30,19 +30,14 @@ data: {token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1N��pbiJ9.L3n
 msg: "�ɹ�"
 success: true*/
   {
-    url: '/account/login',
+    url: '/login',
     type: 'post',
     response: config => {
-      const { username } = config.query
-      const token = tokens[username]
 
-      // mock error
-      if (!token) {
-        return {
-          code: 60204,
-          message: 'Account and password are incorrect.'
-        }
-      }
+      const { code, password } = config.body
+
+      console.log("username:"+code+",password:"+password)
+      const token = tokens[code]
 
       return {
         status: 'success',
@@ -77,19 +72,11 @@ __proto__: Object
 msg: "�ɹ�"
 success: true*/
   {
-    url: '/account/info\.*',
+    url: '/user/info\.*',
     type: 'get',
     response: config => {
       const { token } = config.query
       const info = users['admin-token']
-
-      // mock error
-      if (!info) {
-        return {
-          code: 50008,
-          message: 'Login failed, unable to get user details.'
-        }
-      }
 
       return {
         status: 'success',

@@ -1,22 +1,22 @@
 import request from '@/utils/request'
 
 export function login(data) {
-  // return request({
-  //   url: '/login',
-  //   method: 'post',
-  //   data: {
-  //     "code": data.username,
-  //     "password": data.password
-  //   }
-  // })
   return request({
-    url: '/account/login',
+    url: '/login',
     method: 'post',
-    params: {
-      "username": data.username,
+    data: {
+      "code": data.username,
       "password": data.password
     }
   })
+  // return request({
+  //   url: '/account/login',
+  //   method: 'post',
+  //   params: {
+  //     "username": data.username,
+  //     "password": data.password
+  //   }
+  // })
 }
 export function registry(data) {
   return request({
@@ -31,7 +31,7 @@ export function registry(data) {
 
 export function getInfo() {
   return request({
-    url: '/account/info',
+    url: '/user/info',
     method: 'get'
   })
 }
