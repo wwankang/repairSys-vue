@@ -27,7 +27,7 @@
       </el-table-column>
       <el-table-column label="是否是菜单" >
         <template slot-scope="scope">
-          <span >{{scope.row.isMenuName}}</span>
+          <span >{{scope.row.isMenuName | ismenufilter}}</span>
         </template>
       </el-table-column>
         <el-table-column label="URL">
@@ -37,12 +37,12 @@
       </el-table-column>
       <el-table-column label="是否启用">
         <template slot-scope="scope">
-          <span >{{scope.row.statusName}}</span>
+          <span >{{scope.row.statusName | statusfilter}}</span>
         </template>
       </el-table-column>
       <el-table-column label="是否隐藏">
         <template slot-scope="scope">
-          <span >{{scope.row.hidden}}</span>
+          <span >{{scope.row.hidden | hiddenfilter}}</span>
         </template>
       </el-table-column>
       <el-table-column label="顺序">

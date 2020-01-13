@@ -86,16 +86,18 @@ export default {
   },
   methods: {
     init() {
+      this.listLoading = true
       deptList().then(response => {
         this.deptTree.data = response.data
       })
       this.fetchData()
+      this.listLoading = false
+
     },
     fetchData() {
-      this.listLoading = true
+
       getList(this.listQuery).then(response => {
         this.list = response.data.records
-        this.listLoading = false
         this.total = response.data.total
       })
     },

@@ -68,7 +68,7 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
         <el-row>
           <el-col :span="12">
-            <el-form-item label="编码" prop="tips">
+            <el-form-item label="描述" prop="tips">
               <el-input v-model="form.tips" minlength=1></el-input>
             </el-form-item>
           </el-col>

@@ -51,6 +51,19 @@ export default {
   created() {
     this.init()
   },
+  filters:{
+    ismenufilter : function (value) {
+      return value === 1 ? "是" : "否"
+    },
+    statusfilter : function (value) {
+      return value === 1 ? "禁用" : "启用"
+    },
+    hiddenfilter : function (value) {
+      return value === true ? "是" : "否"
+    }
+
+
+  },
   methods: {
     init() {
       this.fetchData()
@@ -59,6 +72,7 @@ export default {
       this.listLoading = true
       getList().then(response => {
         this.data = response.data
+        // console.log("getMenuList"+JSON.stringify(this.data))
         this.listLoading = false
       })
     },
@@ -105,16 +119,16 @@ export default {
     },
     edit(row) {
       this.form = row
-      if (row.isMenuName === '是') {
-        this.form.ismenu = 1
-      } else {
-        this.form.ismenu = 0
-      }
-      if (row.statusName === '启用') {
-        this.form.status = 1
-      } else {
-        this.form.status = 0
-      }
+      // if (row.isMenuName === '是') {
+      //   this.form.ismenu = 1
+      // } else {
+      //   this.form.ismenu = 0
+      // }
+      // if (row.statusName === '启用') {
+      //   this.form.status = 1
+      // } else {
+      //   this.form.status = 0
+      // }
       if (row.parent) {
         this.form.pcode = row.parent.code
         this.form.pname = row.parent.name
