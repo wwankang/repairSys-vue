@@ -215,6 +215,7 @@ export default {
       if (this.checkSel()) {
         menuTreeListByRoleId(this.selRow.id).then(response => {
           this.permissons = response.data.treeData
+          console.log(JSON.stringify(response.data))
           this.checkedPermissionKeys = response.data.checkedIds
           this.permissonVisible = true
         })
